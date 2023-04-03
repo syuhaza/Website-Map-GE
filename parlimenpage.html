@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="http://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+    <style>
+        body {
+
+            margin: auto;
+            font-family: futura-pt, sans-serif;
+            background-color: rgba(161, 208, 223, 0.274);
+        }
+
+        .topnav {
+
+            overflow: hidden;
+            background-color: rgba(107, 157, 168, 0.877);
+
+        }
+
+        .topnav a {
+
+            color: rgb(0, 0, 0);
+            font-weight: bold;
+            text-align: center;
+            padding: 20px 30px;
+            text-decoration: none;
+            font-size: 20px;
+            width: 386px;
+            display: inline-block;
+
+        }
+
+        .topnav a:hover {
+
+            background-color: rgb(68, 120, 122);
+            color: rgb(255, 255, 255);
+            padding: 20px 30px;
+            border-radius: 6px;
+
+        }
+
+        /* .topnav .search-container {
+            float: right;
+        } */
+
+        /* .topnav input[type=text] {
+
+            padding: 10px 70px;
+            margin-top: 10px;
+            margin-left: 5px;
+            font-size: 15px;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .topnav .search-container button {
+            float: right;
+            padding: 12px 20px;
+            margin-top: 10px;
+            margin-right: 30px; */
+        /* background: rgb(255, 255, 255); */
+        /* font-size: 10px;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .topnav .search-container button:hover {
+            background: #ccc;
+        }
+
+        @media screen and (max-width: 600px) {
+            .topnav .search-container {
+                float: none;
+            }
+
+            .topnav a,
+            .topnav input[type=text],
+            .topnav .search-container button {
+                float: none;
+                display: block;
+                text-align: left;
+                width: 100%;
+                margin: 0;
+                padding: 14px;
+            }
+
+            .topnav input[type=text] {
+                border: 1px solid #ccc;
+            }
+
+
+        } */
+
+        .list_negeri li,
+        .list_negeri li {
+
+            padding: 0;
+            margin: 0;
+            list-style: none;
+
+        }
+
+        .list_negeri li {
+
+            width: 22%;
+            margin-bottom: 2em;
+            float: unset;
+            vertical-align: top;
+        }
+
+        .widget_title {
+
+            width: 60%;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+            line-height: 2.0;
+            border-top: solid 2px navy;
+            border-bottom: solid 2px navy;
+        }
+
+        .container {
+
+            margin: auto;
+        }
+
+        /* .negeri {
+            text-align: center;
+            font-size: 30px;
+
+        } */
+
+        .negeri {
+
+            text-align: left;
+            border: 1px solid rgba(30, 114, 133, 0.699);
+            font-size: 15px;
+            background-color: rgb(209, 209, 209);
+            color: black;
+            font-size: 20px;
+            margin: 0px;
+            margin-top: 0px;
+            padding: 10px;
+        }
+
+
+        .parlimen {
+            text-align: center;
+            border: 1px solid rgba(30, 114, 133, 0.699);
+            font-size: 20px;
+            background-color: rgb(23, 72, 83);
+            color: white;
+            padding: 15px;
+            padding-left: 25px;
+        }
+
+        svg {
+            font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: bold;
+            margin-top: 170px;
+            margin-left: 25.33%;
+            margin-right: 50%;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            background-color: rgb(31, 101, 194);
+            color: white;
+            padding: 12px;
+            margin: 0px;
+        }
+
+        /* .title {
+            background-color: rgb(10, 78, 105);
+            margin-top: 10px;
+            padding: 25px;
+            font-size: 30px;
+            color: white;
+        } */
+
+        h2,
+        h3 {
+            text-align: center;
+            background-color: rgb(28, 71, 88);
+            color: white;
+            margin-top: 10px;
+            margin-bottom: 0;
+            border-color: black;
+            font-weight: bold;
+            font-size: 50px;
+        }
+
+        h3.title-svg1 {
+            margin: 40px;
+            background-color: rgb(35, 50, 58);
+            margin-left: 100px;
+            margin-right: 100px
+        }
+
+        .svg-2-1 {
+
+            margin-left: auto;
+            margin-right: auto;
+            justify-items: center;
+
+        }
+
+        .subactive {
+            display: none;
+        }
+
+        .big_con {
+
+            margin-top: 50px;
+            margin-left: 150px;
+            margin-right: 150px;
+
+        }
+
+        .intro_title_small {
+
+            font-family: futura-pt, sans-serif;
+            font-weight: 100;
+            font-size: 18px;
+            text-align: center;
+            color: hsl(0, 0%, 8%);
+            font-weight: bold;
+            line-height: 80px;
+            margin: 0 auto;
+            padding-bottom: 5px;
+        }
+
+        /* button top down */
+        #myBtn {
+            background: url("arrow.png")no-repeat scroll 0 0 transparent;
+            background-size: contain;
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            z-index: 99;
+            font-size: 20px;
+            border: none;
+            outline: none;
+            background-color: none;
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .myBtn:hover {
+            background-color: #555;
+        }
+    </style>
+
+</head>
+<html>
+
+<body>
+
+    <div class="top"
+        style="background-color: rgba(161, 208, 223, 0.274); text-align: center; height: 100px; padding-top: 10px; background-image: url('3-kuala-lumpur-malaysia-skyline-michael-tompsett.jpg');">
+
+        <a href="#">
+            <img class="imageMsia" src="malaysia-flag-dry-paint-style-260nw-467560481-removebg-preview.png"
+                alt="Bendera Malaysia img" href="websitepru.html" style="height:50px; width:100px;">
+        </a>
+
+        <h3 style="font-family:  Calibri, sans-serif; font-size: 16px; ;">MALAYSIA</h3>
+
+    </div>
+
+    <div class="topnav">
+        <div>
+            <a href="index.html">HOME</a>
+            <a href="parlimenpage.html">PARLIMEN</a>
+            <a href="dunn.html">DUN</a>
+            <!-- <div class="search-container">
+                <form action="/action_page.php">
+                    <input type="text" placeholder="Search.." name="search">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </div> -->
+        </div>
+    </div>
+
+    <div class="content" style="height: 33rem;">
+
+        <h5 class="intro_title_small">MAKLUMAT PILIHANRAYA KE 15</h5>
+
+        <div class="container2">
+
+            <div class="row" style="padding: 20px 25px;">
+                <div class="col" style="margin-bottom: 15px;">
+                    <div class="widget_title">NEGERI
+                    </div>
+                    <div class="list-negeri">
+
+                        <div style="text-align:center; display: flex; justify-content:center;">
+
+                            <div style="height:70px; width:70px; margin: 50px;"><img id="FlagNegeri" src="flag/Perlis.webp"
+                                    alt="perlis" style="height:70px; width: 70px; border-radius: 50px;">
+                                <p style="text-align:center;">Perlis</p>
+                            </div>
+
+
+                            <div style="height:70px; width:70px; margin: 50px;"><img id="FlagNegeri" src="flag/Johor.webp"
+                                    alt="johor" style="height:70px; width:70px; border-radius: 50px;">
+                                <p style="text-align:center;">Johor</p>
+                            </div>
+
+                            <div style="height:70px; width:70px; margin: 50px;"><img id="FlagNegeri"
+                                    src="flag/KualaLumpur.webp" alt="klumpur"
+                                    style="height:70px; width:70px; border-radius: 50px;">
+                                <p style="text-align:center;">W.P Kuala Lumpur</p>
+                            </div>
+
+                            <div style="height:70px; width:70px; margin: 50px;"><img id="FlagNegeri" src="flag/labuan.webp"
+                                    alt="labuan" style="height:70px; width:70px; border-radius: 50px;">
+                                <p style="text-align:center;">W.P Labuan</p>
+                            </div>
+
+                            <div style="height:70px; width:70px; margin: 50px;"><img id="FlagNegeri"
+                                    src="flag/putrajaya.webp" alt="pjaya"
+                                    style="height:70px; width:70px; border-radius: 50px;">
+                                <p style="text-align:center;">W.P Putrajaya</p>
+                            </div>
+
+                        </div>
+
+                        <div style="text-align:center; display: flex; justify-content:center;">
+
+                            <div style="height:70px; width:70px; margin: 50px;"><img id="FlagNegeri" src="flag/Kedah.webp"
+                                    alt="kedah" style="height:70px; width:70px; border-radius: 50px;">
+                                <p style="text-align:center;">Kedah</p>
+                            </div>
+
+
+
+                            <div style="height:70px; width:70px; margin: 50px;"><img id="FlagNegeri" src="flag/Kelantan.webp"
+                                    alt="kelantan" style="height:70px; width:70px; border-radius: 50px;">
+                                <p style="text-align:center;">Kelantan</p>
+                            </div>
+
+                            <div style="height:70px; width:70px; margin: 50px;"><img id="FlagNegeri" src="flag/Melaka.webp"
+                                    alt="melaka" style="height:70px; width:70px; border-radius: 50px;">
+                                <p style="text-align:center;">Melaka</p>
+                            </div>
+
+                            <div style="height:70px; width:70px; margin: 50px;"><img id="FlagNegeri"
+                                    src="flag/NegeriSembilan.webp" alt="n9"
+                                    style="height:70px; width:70px; border-radius: 50px;">
+                                <p style="text-align:center; ">Negeri Sembilan</p>
+                            </div>
+
+                            <div style="height:70px; width:70px; margin: 50px;"><img id="FlagNegeri" src="flag/Pahang.webp"
+                                    alt="pahang" style="height:70px; width:70px; border-radius: 50px;">
+                                <p style="text-align:center;">Pahang</p>
+                            </div>
+                        </div>
+
+                        <div style="text-align:center; display: flex; justify-content:center;">
+                            <div style="height:70px; width:70px; margin: 50px;"><img id="FlagNegeri" src="flag/Perak.webp"
+                                    alt="perak" style="height:70px; width:70px; border-radius: 50px;">
+                                <p style="text-align:center;">Perak</p>
+                            </div>
+
+                            <div style="height:70px; width:70px; margin: 50px;"><img id="FlagNegeri" src="flag/Penang.webp"
+                                    alt="penang" style="height:70px; width:70px; border-radius: 50px;">
+                                <p style="text-align:center;">Penang</p>
+                            </div>
+
+                            <div style="height:70px; width:70px; margin: 50px;"><img id="FlagNegeri" src="flag/Sabah.webp"
+                                    alt="sabah" style="height:70px; width:70px; border-radius: 50px;">
+                                <p style="text-align:center;">Sabah</p>
+                            </div>
+
+                            <div style="height:70px; width:70px; margin: 50px;"><img id="FlagNegeri" src="flag/Sarawak.webp"
+                                    alt="sarawak" style="height:70px; width:70px; border-radius: 50px;">
+                                <p style="text-align:center;">Sarawak</p>
+                            </div>
+
+                            <div style="height:70px; width:70px; margin: 50px;"><img id="FlagNegeri" src="flag/Selangor.webp"
+                                    alt="selangor" style="height:70px; width:70px; border-radius: 50px;">
+                                <p style="text-align:center;">Selangor</p>
+                            </div>
+
+                            <div style="height:70px; width:70px; margin: 50px;"><img id="FlagNegeri"
+                                    src="flag/Terengganu.webp" alt="ganu"
+                                    style="height:70px; width:70px; border-radius: 50px;">
+                                <p style="text-align: justify;">Terengganu</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="my_dataviz"></div>
+    <div id="stacked"></div>
+    <div class="all"></div>
+    <div class="barChart"></div>
+    <div class="my_dataviz"></div>
+    <div id="my_dataviz"></div>
+    <div class="stacked_bar"></div>
+
+    <button onclick="topFunction()" id="myBtn" title="Go to top"></button>
+
+    <script>
+
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 40 || document.documentElement.scrollTop > 40) {
+                document.getElementById("myBtn").style.display = "block";
+            } else {
+                document.getElementById("myBtn").style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
+        // const margin = { top: 10, right: 30, bottom: 20, left: 50 },
+        //     width = 460 - margin.left - margin.right,
+        //     height = 400 - margin.top - margin.bottom;
+
+        // const svg = d3.select("#my_dataviz")
+        //     .append("svg")
+        //     .attr("width", width + margin.left + margin.right)
+        //     .attr("height", height + margin.top + margin.bottom)
+        //     .append("g")
+        //     .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        d3.csv('excel/clean_resultPru15_2.csv').then(csv => {
+
+            // console.log('data',csv)
+
+            dataset = csv
+            columns = csv.columns
+
+            console.log('dataset', dataset)
+            console.log('columns', columns)
+
+
+            dataset.forEach((d, i) => {
+
+                for (var i in d) {
+                    if (d[i] == '\\N') {
+                        d[i] = null
+
+                    }
+                }
+
+            })
+
+            table(dataset)
+            createDiv(dataset)
+            barChart(dataset)
+
+        })
+
+
+
+        function table(data) {
+
+            console.log('data from function', data)
+
+            column_order = ['negeri', 'parlimen']
+
+            d3.select('.table')
+                .selectAll('.table_testing')
+                .data([{ data: data }])
+                .join('table')
+                .attr('class', 'table_testing')
+                .call(sel => {
+
+                    // thead
+                    sel.selectAll('thead').data(d => [d])
+                        .join('thead')
+                        .selectAll('tr').data(d => [d])
+                        .join('tr')
+                        .selectAll('th')
+                        .data(column_order)
+                        .join('th')
+                        .html(d => d.toUpperCase())
+
+
+                    // tbody
+                    sel.selectAll('tbody').data(d => [d])
+                        .join('tbody')
+
+                        // rows
+                        .selectAll('tr').data(d => d.data)
+                        .join('tr')
+
+                        // columns
+                        .selectAll('td').data(d => {
+
+                            // sync header with data
+
+                            let k = column_order
+                                .map(p => {
+                                    return {
+                                        column: p,
+                                        data: d
+                                    }
+                                })
+
+                            return k;
+
+                        })
+                        .join('td')
+                        .html(d => {
+
+                            return d.data[d.column];
+
+                        })
+
+                });
+
+        }
+
+
+        function createDiv(data) {
+
+            filter = data.filter(data => data.status == 'MENANG')
+
+            var groupNegeri = d3.groups(filter, d => d.negeri).map(d => {
+                return {
+                    negeri: d[0],
+                    value: d[1]
+                }
+            })
+
+            console.log(groupNegeri)
+
+            d3.select('.all')
+                .selectAll('.big_con')
+                .data([{ data: groupNegeri }])
+                .join('div')
+                .attr('class', 'big_con')
+
+                .call(sel => {
+
+                    sel.selectAll('.container')
+                        .data(d => d.data)
+                        .join('div')
+                        .attr('class', 'container')
+                        // // .text(d=>d.parlimen)
+                        .style('margin', '20px')
+                        // .style('margin-top', '90px')
+                        .style('border', '1px solid black')
+                        // .style('text-align', 'center')
+                        .call(sel => {
+
+                            sel.selectAll('.negeri')
+                                .data(d => [d])
+                                .join('div')
+                                .attr('class', 'negeri')
+                                .text(d => d.negeri)
+                                .style('flex', '1 0 auto')
+                                // .style('border', '5px solid black')
+                                .style('text-align', 'center')
+                                .call(sel => {
+
+                                    sel.selectAll('.parlimen-container')
+                                        .data(d => [d])
+                                        .join('div')
+                                        .style('display', 'flex')
+                                        .style('flex-wrap', 'wrap')
+                                        .attr('class', 'parlimen-container')
+                                        .call(sel => {
+
+
+
+                                            sel.selectAll('.parlimen subactive')
+                                                .data(d => d.value)
+                                                .join('div')
+                                                .attr('class', 'parlimen subactive')
+                                                .style('flex', '1 1 1000px')
+                                                .style('flex-wrap', 'wrap')
+                                                .html(d => "P." + d.parid + " " + d.parlimen)
+                                        })
+                                })
+                        })
+
+                })
+
+            var negeri = document.getElementsByClassName("negeri");
+            // var parlimen = negeri.getElementsByClassName("parlimen");
+            // console.log(parlimen)
+
+            for (var i = 0; i < negeri.length; i++) {
+                negeri[i].addEventListener("click", function () {
+                    console.log(this)
+                    var parlimen = this.getElementsByClassName("parlimen")
+                    parlimenActive = parlimen[0].className
+                    console.log(parlimen.length)
+                    if (this.className == 'negeri active') {
+                        this.className = this.className.replace(" active", "");
+                        for (var k = 0; k < parlimen.length; k++) {
+                            parlimen[k].className = parlimen[k].className + " subactive"
+                        }
+
+                    }
+                    else if (this.className == 'negeri') {
+                        this.className = this.className + " active";
+                        for (var k = 0; k < parlimen.length; k++) {
+                            parlimen[k].className = parlimen[k].className.replace(" subactive", "");
+                        }
+                    }
+
+
+                });
+            }
+
+        }
+
+
+        d3.csv("excel/KEPUTUSAN_NEGERI.csv").then(function (data) {
+
+
+
+            const margin = { top: 10, right: 30, bottom: 20, left: 50 },
+                width = 700 - margin.left - margin.right,
+                height = 700 - margin.top - margin.bottom;
+
+            const svg = d3.select("#stacked")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`)
+
+            // List of subgroups = header of the csv files = soil condition here
+            const subgroups = ["BN", "PH", "PN", "PAS", "MUDA", "BEBAS", "DAP", "GPS", "GRS", "KDM"]
+
+            console.log(subgroups) //parti
+
+            // List of groups = species here = value of the first column called group -> I show them on the X axis
+            const groups = ["JOHOR","KEDAH","KELANTAN", "MELAKA", "NEGERI SEMBILAN","PAHANG","PULAU PINANG","PERAK","PERLIS","SELANGOR","TERENGGANU","SABAH","SARAWAK","W.P KUALA LUMPUR","W.P LABUAN","W.P PUTRAJAYA"]
+
+            console.log(groups) //negeri
+
+            // Add y axis (negeri)
+            const yaxis = d3.scaleBand()
+                .domain(groups)
+                .range([0, height])
+                .padding([0.3])
+            svg.append("g")
+                .attr("transform", `translate (70,0)`)
+                .call(d3.axisLeft(yaxis).tickSizeOuter(0))
+                .call(g => g.select(".domain").remove());
+
+            // const x = d3.scaleBand()
+            //   .domain(groups)
+            //   .range([0, width])
+            //    .padding([0.2])
+            // svg.append("g")
+            //    .attr("transform", `translate(0, ${height})`)
+            //    .call(d3.axisBottom(x).tickSizeOuter(0));
+
+
+            // Add x axis 
+            const xaxis = d3.scaleLinear()
+                .domain([0, 30])
+                //.range([width, 0])
+                .range([0, width])
+            svg.append("g")
+                .attr("transform", `translate(70, ${height})`)
+            //.call(d3.axisBottom(xaxis));
+
+            //const y = d3.scaleLinear()
+            //    .domain([0, 60])
+            //    .range([height, 0]);
+            //svg.append("g")
+            //    .call(d3.axisLeft(y));
+
+
+            // color palette = one color per subgroup
+            var color = d3.scaleOrdinal()
+                .domain([0, 30])
+                .range(["white", "pink", "blue", "red", "#2B9E8F", "green", "black", "pink", "#E6B872", "#812926", "#EBEFB5"])
+
+            //stack the data? --> stack per subgroup
+            const stackedData = d3.stack()
+                .keys(subgroups)
+                (data)
+
+            console.log(stackedData)
+
+
+
+
+            // ----------------
+            // Create a tooltip
+            // ----------------
+            const tooltip = d3.select("#my_dataviz")
+                .append("div")
+                .style("opacity", 0)
+                .attr("class", "tooltip")
+                .style("background-color", "white")
+                .style("border", "solid")
+                .style("border-width", "1px")
+                .style("border-radius", "10px")
+                .style("padding", "10px")
+                // .style("width", '500px')
+                .style("text-align", 'center')
+                .style("margin", 'auto')
+                .style('position', 'absolute')
+
+            // .style("padding-right", "50px")
+            // .style("padding-left", "auto")
+
+            // Three function that change the tooltip when user hover / move / leave a cell
+            const mouseover = function (event, d) {
+                const subgroupName = d3.select(this.parentNode).datum().key;
+                const subgroupValue = d.data[subgroupName];
+                tooltip
+                    .html("PARTI: " + subgroupName + "<br>" + "KERUSI MENANG: " + subgroupValue)
+                    .style("opacity", 1)
+
+            }
+            const mousemove = function (event, d) {
+                tooltip.style("transform", "translateY(-55%)")
+                    .style("left", (event.pageX + 20) + "px")
+                    .style("top", (event.pageY - 40) + "px")
+            }
+            const mouseleave = function (event, d) {
+                tooltip
+                    .style("opacity", 0)
+            }
+
+            // Show the bars
+            svg.append("g")
+                .selectAll("g")
+                // Enter in the stack data = loop key per key = group per group
+                .data(stackedData)
+                .join("g")
+                .attr("fill", function (d) { return color(d) })
+                .selectAll("rect")
+                // enter a second time = loop subgroup per subgroup to add all rectangles
+                .data(d => d)
+                .join("rect")
+                .attr("x", d => xaxis(d[0]))
+                .attr("y", d => yaxis(d.data.negeri))
+                .attr("height", yaxis.bandwidth())
+                .attr("width", d => xaxis(d[1]) - xaxis(d[0]))
+                .attr("stroke", "grey")
+                .attr("transform", "translate(80,0)")
+                .on("mouseover", mouseover)
+                .on("mousemove", mousemove)
+                .on("mouseleave", mouseleave)
+
+        })
+
+
+    </script>
+
+
+</body>
+
+</html>

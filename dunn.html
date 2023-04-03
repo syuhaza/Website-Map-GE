@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<meta charset="Utf-8">
+<HTML>
+
+<head>
+    <script src="http://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Load d3.js
+  <script src="https://d3js.org/d3.v7.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script> 
+  <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script> -->
+
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<body>
+
+
+    <div class="top"
+    style="background-color: rgba(161, 208, 223, 0.274); text-align: center; height: 100px; padding-top: 10px; background-image: url('3-kuala-lumpur-malaysia-skyline-michael-tompsett.jpg');">
+
+    <a href="#">
+        <img class="imageMsia" src="malaysia-flag-dry-paint-style-260nw-467560481-removebg-preview.png"
+            alt="Bendera Malaysia img" style="height:50px; width:100px;">
+    </a>
+
+    <h3 style="font-family:  Calibri, sans-serif; font-size: 16px; ;">MALAYSIA</h3>
+
+</div>
+
+<div class="topnav">
+    <div>
+        <a href="index.html">HOME</a>
+        <a href="parlimenpage.html">PARLIMEN</a>
+        <a href="dunn.html">DUN</a>
+        <!-- <div class="search-container">
+            <form action="/action_page.php">
+                <input type="text" placeholder="Search.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div> -->
+    </div>
+</div>
+
+<h5 class="intro_title_small">MAKLUMAT PILIHANRAYA KE 15</h5>
+
+    <div class="my_dataviz"></div>
+    <!-- <div class="stackedBar"></div> -->
+    <div id="div_tooltip"></div>
+
+    <div class="all"></div>
+    <div class="createDiv"></div>
+
+    <button onclick="topFunction()" id="myBtn" title="Go to top"></button>
+    
+    <script>
+
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 40 || document.documentElement.scrollTop > 40) {
+    document.getElementById("myBtn").style.display = "block";
+  } else {
+   document.getElementById("myBtn").style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+
+        const margin = { top: 10, right: 30, bottom: 20, left: 50 },
+            width = 460 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
+
+        d3.csv('excel/Dun.csv').then(csv => {
+
+            console.log('data', csv)
+
+            dataset = csv
+            columns = csv.columns
+
+            console.log('dataset', dataset)
+            console.log('columns', columns)
+
+            createDiv(dataset)
+
+        })
+
+        function createDiv(data) {
+
+            filter = data.filter(data => data.dunid)
+
+            var groupDun = d3.groups(data, d => d.negeri).map(d => {
+                return {
+                    negeri: d[0],
+                    value: d[1]
+                }
+            })
+
+            console.log(groupDun)
+
+            d3.select('.all')
+                .selectAll('.container')
+                .data([{ data: groupDun }])
+                .join('div')
+                .attr('class', 'container')
+
+                .call(sel => {
+
+                    sel.selectAll('.negeri')
+                        .data(d => d.data)
+                        .join('div')
+                        .attr('class', 'negeri')
+                        .html(d => d.negeri)
+                        .call(sel => {
+                            sel.selectAll('.container')
+                                .data(d =>
+                                    d3.groups(d.value, d => d['parlimen']).map(d => {
+                                        return {
+                                            parlimen: d[0],
+                                            value: d[1]
+                                        }
+                                    })
+                                )
+                                .join('div')
+                                .attr('class', 'container')
+                                // .text(d=>d.parlimen)
+                                // .style('margin', '10px')
+                                // .style('margin-top', '90px')
+                               // .style('border', '1px solid black')
+                                // .style('text-align', 'center')
+                                .call(sel => {
+
+
+
+
+                                    // sel.selectAll('.negeri')
+                                    //     .data(d => [d])
+                                    //     .join('div')
+                                    //     .attr('class', 'negeri')
+                                    //     .text(d => d.parlimen)
+                                    //     .style('flex', '1 0 auto')
+                                    //     // .style('border', '5px solid black')
+                                    //     .style('text-align', 'center')
+                                    //     .call(sel => {
+
+                                    // sel.selectAll('.parlimen')
+                                    //     .data(d => [d])
+                                    //     .join('div')
+                                    //     .attr('class', 'parlimen')
+                                    //     .text(d => d.parlimen)
+                                    //     .style('flex', '1 0 auto')
+                                    //     .style('padding-top','10px')
+                                    //     .style('font-size','20px')
+                                    //     // .style('border', '5px solid black')
+                                    //     .style('text-align', 'center')
+                                    //     .call(sel => {
+
+                                    sel.selectAll('.parlimen-container')
+                                        .data(d => [d])
+                                        .join('div')
+                                        .style('display', 'flex')
+                                        .style('flex-wrap', 'wrap')
+                                        .attr('class', 'parlimen-container')
+                                        .call(sel => {
+
+                                            sel.selectAll('.parlimen subactive')
+                                                .data(d => [d])
+                                                .join('div')
+                                                .attr('class', 'parlimen subactive')
+                                                .style('flex', '1 1 1000px')
+                                                .style('flex-wrap', 'wrap')
+                                                .html(d => d.parlimen)
+
+                                            // sel.selectAll('.dun-container')
+                                            //     .data(d => [d])
+                                            //     .join('div')
+                                            //     .style('display', 'flex')
+                                            //     .style('flex-wrap', 'wrap')
+                                            //     .attr('class', 'dun-container')
+                                                .call(sel => {
+
+                                                    // sel.selectAll('.parid')
+                                                    //     .data(d=>d)
+                                                    //     .join('div')
+                                                    //     .attr('class', 'parid')
+                                                    //     .html(d=>'P'+d.parid)
+
+                                                    sel.selectAll('.dun')
+                                                        .data(d => d.value)
+                                                        .join('div')
+                                                        .attr('class', 'dun')
+                                                        .style('flex', '1 1 100px')
+                                                        .style('flex-wrap', 'wrap')
+                                                        .style('padding', '20px')
+                                                        .style('margin-top', '10px')
+                                                        .html(d => d.dun)
+
+                                                    // sel.selectAll('.dun-container')
+                                                    //     .data(d =>[d])
+                                                    //     .join('div')
+                                                    //     .style('display', 'flex')
+                                                    //     .style('flex-wrap', 'wrap')
+                                                    //     .attr('class', 'dun-container')
+                                                        // .call(sel => {
+
+                                                        //     sel.selectAll('.dun')
+                                                        //         .data(d => [d])
+                                                        //         .join('div')
+                                                        //         .attr('class', 'dun')
+                                                        //         .style('flex', '1 1 1000px')
+                                                        //         .style('flex-wrap', 'wrap')
+                                                        //         .html(d => d.dun)
+
+                                                        // })
+                                                })
+                                        })
+                                })
+
+                        })
+
+                    var negeri = document.getElementsByClassName("negeri");
+                    // var parlimen = negeri.getElementsByClassName("parlimen");
+                    // console.log(parlimen)
+
+                    for (var i = 0; i < negeri.length; i++) {
+                        negeri[i].addEventListener("click", function () {
+                            console.log(this)
+                            var parlimen = this.getElementsByClassName("parlimen")
+                            parlimenActive = parlimen[0].className
+                            console.log(parlimen.length)
+                            if (this.className == 'negeri active') {
+                                this.className = this.className.replace(" active", "");
+                                for (var k = 0; k < parlimen.length; k++) {
+                                    parlimen[k].className = parlimen[k].className + " subactive"
+                                }
+
+                            }
+                            else if (this.className == 'negeri') {
+                                this.className = this.className + " active";
+                                for (var k = 0; k < parlimen.length; k++) {
+                                    parlimen[k].className = parlimen[k].className.replace(" subactive", "");
+                                }
+                            }
+
+
+                        });
+                }
+
+                // var negeri = document.getElementsByClassName("negeri");
+                //     // var parlimen = negeri.getElementsByClassName("parlimen");
+                //     // console.log(parlimen)
+
+                //     for (var i = 0; i < negeri.length; i++) {
+                //         negeri[i].addEventListener("click", function () {
+                //             console.log(this)
+                //             var parlimen = this.getElementsByClassName("parlimen")
+                //             parlimenActive = parlimen[0].className
+                //             console.log(parlimen.length)
+                //             if (this.className == 'negeri active') {
+                //                 this.className = this.className.replace(" active", "");
+                //                 for (var k = 0; k < parlimen.length; k++) {
+                //                     parlimen[k].className = parlimen[k].className + " subactive"
+                //                 }
+
+                //             }
+                //             else if (this.className == 'negeri') {
+                //                 this.className = this.className + " active";
+                //                 for (var k = 0; k < parlimen.length; k++) {
+                //                     parlimen[k].className = parlimen[k].className.replace(" subactive", "");
+                //                 }
+                //             }
+
+
+                //         });
+                // }
+
+                }
+        )}
+
+        function colorParti(d) {
+                        if (d.parti == 'PN') {
+                            return '#043253'
+                        }
+                        if (d.parti == 'PH') {
+                            return '#D7292F'
+                        }
+                        if (d.parti == 'MUDA') {
+                            return 'black'
+                        }
+                        if (d.parti == 'BN') {
+                            return '#031A93'
+                        }
+                        if (d.parti == 'PAS') {
+                            return '#378805'
+                        }
+                        if (d.parti == 'GPS') {
+                            return '#FF6600'
+                        }
+                        if (d.parti == 'DAP') {
+                            return '#E30911'
+                        }
+                        if (d.parti == 'GRS') {
+                            return '#6285a8'
+                        }
+                        if (d.parti == 'BEBAS') {
+                            return '#993300'
+                        }
+                        if (d.parti == 'WARISAN') {
+                            return '#5BC5F0'
+                        }
+                        if (d.parti == 'PBM') {
+                            return '#323467'
+                        }
+                        if (d.parti == 'KDM') {
+                            return '#EB7389'
+                        }
+                    }
+
+        function position(d) {
+
+                        if (d.parti == 'PH') {
+                            return 0;
+                        }
+                        if (d.parti == 'PN') {
+                            return 76;
+                        }
+                        if (d.parti == 'BN') {
+                            return 127;
+                        }
+                        if (d.parti == 'GPS') {
+                            return 157;
+                        }
+                        if (d.parti == 'PAS') {
+                            return 180;
+                        }
+                        if (d.parti == 'GRS') {
+                            return 202;
+                        }
+                        if (d.parti == 'DAP') {
+                            return 208;
+                        }
+                        if (d.parti == 'WARISAN') {
+                            return 213;
+                        }
+                        if (d.parti == 'BEBAS') {
+                            return 216;
+                        }
+                        if (d.parti == 'MUDA') {
+                            return 218;
+                        }
+                        if (d.parti == 'KDM') {
+                            return 219;
+                        }
+                        if (d.parti == 'PBM') {
+                            return 220;
+                        }
+
+                    }
+
+        function map() {
+
+                        var width = 960,
+                            height = 400;
+
+                        var projection = d3.geoMercator()
+                            .center([3, 0]) // centering the map
+                            .scale(2000 + 5 * 100) // scaling the map
+                            .rotate([-109.45 + 5 / 2, -3]);
+
+
+
+                        var svg = d3.select(".map").append("svg")
+                            .attr('class', 'map')
+                            //    .attr("width", width)
+                            //    .attr("height", height);
+                            .attr('viewBox', [0, 0, width, height].join(' ')) // fill screen
+                            ;
+                        svg.append('defs')
+                            .html(`
+
+  <filter id="fshadow02" filterUnits="objectBoundingBox" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="BlurAlpha"/>
+    <feOffset in="BlurAlpha" dx="1" dy="1" result="OffsetBlurAlpha"/>
+    <feMerge>
+      <feMergeNode in="OffsetBlurAlpha"/>
+      <feMergeNode in="SourceGraphic"/>
+    </feMerge>
+  </filter>
+
+`);
+
+                        var path = d3.geoPath()
+                            .projection(projection);
+
+                        var g = svg.append("g");
+                        var my = svg.append("g").attr('class', 'map-malaysia');
+
+
+
+
+
+                        //=====================
+                        // from mapv4.html
+                        //=====================
+
+                        //d3.json("malaysia.json", function(error, malaysia) {
+                        d3.json("malaysia.json").then(function (malaysia) {
+
+
+                            var states = topojson.feature(malaysia, malaysia.objects.states);
+                            var land = topojson.feature(malaysia, malaysia.objects.land);
+
+
+                            //=====================
+                            // shift sabah/sarawak/labuan closer to semenanjung
+                            //=====================
+
+                            [land, states].forEach(d => {
+                                d.features
+                                    .forEach(d => {
+                                        d.geometry.coordinates.forEach(d => {
+                                            if (d.length == 1) {
+                                                _shift(d);
+                                            } else {
+                                                d[0].forEach(_shift);
+                                            }
+                                        });
+                                    });
+                            });
+
+
+                            function _shift(d, n) {
+                                if (!n) n = 0;
+                                n++;
+
+                                if (typeof d == 'object' && d.length == 2) {
+
+                                    // apple shift for longitude > 5
+                                    if (d[0] > 105) d[0] += -5;
+
+                                }
+
+                                return d;
+                            }
+
+
+                            //=====================
+                            //
+                            //=====================
+
+                            my.selectAll(".land")
+                                .data(land.features)
+                                .enter()
+                                .append("path")
+                                .attr("class", "land")
+                                .attr("d", path)
+                                .style("fill", "#31485a")
+                                .style("stroke", "#ccc")
+                                .style("stroke-width", 1)
+                                .attr('filter', 'url(#fshadow02)');
+
+
+                            states.features.forEach(d => {
+
+                                // join map id with negeri
+                                d.properties.negeri = {
+                                    1: { flag_id: 1, negeri: "Johor" },  //
+                                    2: { flag_id: 2, negeri: "Kedah" },
+                                    3: { flag_id: 3, negeri: "Kelantan" },
+                                    4: { flag_id: 14, negeri: "Kuala Lumpur" },
+                                    5: { flag_id: 15, negeri: "Labuan" },
+                                    6: { flag_id: 4, negeri: "Melaka" },
+                                    7: { flag_id: 5, negeri: "Negeri Sembilan" },
+                                    8: { flag_id: 6, negeri: "Pahang" },
+                                    9: { flag_id: 8, negeri: "Perak" },
+                                    10: { flag_id: 9, negeri: "Perlis" },
+                                    11: { flag_id: 7, negeri: "Pulau Pinang" },
+                                    12: { flag_id: 12, negeri: "Putrajaya" },
+                                    13: { flag_id: 12, negeri: "Sabah" },
+                                    14: { flag_id: 13, negeri: "Sarawak" },
+                                    15: { flag_id: 10, negeri: "Selangor" },
+                                    16: { flag_id: 11, negeri: "Terengganu" },
+                                }[d.properties.id].negeri;
+
+                            });
+
+                            console.log('states.features', states.features);
+
+                            function colorNegeri(d) {
+
+                                if (d.properties.id == '1') {
+                                    return 'blue'
+                                }
+
+                                if (d.properties.id == '2') {
+                                    return 'green'
+                                }
+
+                            }
+
+                            my.selectAll(".state")
+                                .data(states.features)
+                                .enter()
+                                .append('path')
+                                .attr('d', path)
+                                .attr('fill', function (e, d) {
+                                    return colorNegeri(e)
+                                })
+                                .attr('stroke', '#ddd')
+
+
+
+                            // my.selectAll("text")
+                            //   .data(states.features)
+                            //   .enter()
+                            //     .append('text')
+                            //       .attr('x',d=>path.centroid(d)[0])
+                            //       .attr('y',d=>path.centroid(d)[1])
+                            //       .attr('fill','#00f')
+                            //       .attr('text-anchor','middle')
+                            //       .text(d=>d.properties.negeri)
+
+
+                        });
+                    }
+    </script>
+
+</body>
+
+</html>
